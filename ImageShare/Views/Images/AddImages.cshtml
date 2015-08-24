@@ -1,0 +1,25 @@
+﻿@model ImageShare.Models.ImageViewModel
+
+<form action="" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div>
+        @Html.LabelFor(m => m.AltText)
+        @Html.TextBoxFor(m => m.AltText)
+    </div>
+    <div>
+        @Html.LabelFor(m => m.Caption)
+        @Html.TextBoxFor(m => m.Caption)
+    </div>
+    <div>
+        @Html.LabelFor(m => m.FilesUpload)
+        @Html.TextBoxFor(m => m.FilesUpload, new { type = "file", multiple = "true" })
+    </div>
+    <div>
+        @Html.DropDownListFor(m => m.selectedAlbum, Model.AlbumsDropDown)
+        @Html.ActionLink("Create new Album", "CreateAlbum", "Albums")
+    </div>
+    <button type="submit">Add Images</button>
+
+</form>

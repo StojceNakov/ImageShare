@@ -1,0 +1,23 @@
+﻿@model ImageShare.Models.AlbumViewModel
+
+@{
+    ViewBag.Title = "CreateAlbum";
+}
+
+@using (@Html.BeginForm("CreateAlbum", "Albums", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true);
+
+    <div>
+        @Html.LabelFor(m => m.Name);
+        @Html.TextBoxFor(m => m.Name);
+    </div>
+
+    <div>
+        <input type="submit" value="Create Album">
+    </div>
+}
+
+<h2>CreateAlbum</h2>
+
