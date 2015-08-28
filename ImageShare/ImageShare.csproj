@@ -151,6 +151,7 @@
     <Content Include="packages.config" />
     <Content Include="Views\Images\AddImages.cshtml" />
     <Content Include="Views\Albums\CreateAlbum.cshtml" />
+    <Content Include="Views\Images\index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -249,7 +250,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Images\" />
+    <Folder Include="UploadedImages\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

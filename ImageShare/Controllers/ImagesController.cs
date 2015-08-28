@@ -14,7 +14,7 @@ using IdentitySample.Models;
 
 namespace ImageShare.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class ImagesController : Controller
     {
         private static List<Album> dropDownAlbums;
@@ -34,9 +34,62 @@ namespace ImageShare.Controllers
 
         //
         // GET: /ImageShare/
-        public ActionResult Index()
+        public ActionResult Index(long albumId = -1)
         {
+            string currentUserId = HttpContext.User.Identity.GetUserId();
+            List<Album> albums = ImagesContext.Albums.Where(a => a.ApplicationUserID == currentUserId).ToList();
+            List<Image> images = new List<Image>();
+
+            Album album = null;
+
+            foreach(Album a in albums)
+            {
+                if(albumId == -1)
+                {
+                    album = findNoAlbum(albums);
+                }
+                else
+                {
+                    album = findAlbumById(albumId, albums);
+                }
+                    
+            }
+
+            if(album != null)
+            {
+                images = ImagesContext.Images.Where(i => i.AlbumID == album.AlbumID).ToList();
+            }
+
+            ViewBag.Images = images;
+            ViewBag.Albums = albums;
+
             return View();
+        }
+
+        private Album findAlbumById(long id, List<Album> albums)
+        {
+            foreach (Album a in albums)
+            {
+                if (a.AlbumID == id)
+                {
+                    return a;
+                }
+            }
+
+            return null;
+        }
+
+        private Album findNoAlbum(List<Album> albums)
+        {
+            foreach (Album a in albums)
+            {
+                if (a.Type == AlbumType.NoAlbum)
+                {
+                    return a;
+                }
+            }
+
+            return null;
         }
 
         public ActionResult AddImages()
@@ -91,7 +144,7 @@ namespace ImageShare.Controllers
                 Album selectedAlbum = dropDownAlbums.Find(a => a.AlbumID == model.selectedAlbum);
                 bool error = false;
 
-                System.Diagnostics.Debug.WriteLine("Image URL " + "asd");
+                //System.Diagnostics.Debug.WriteLine("Image URL " + "asd");
 
                 foreach (var imageToUpload in model.FilesUpload)
                 {
@@ -109,7 +162,7 @@ namespace ImageShare.Controllers
                         image.Caption = model.Caption;
                         image.Title = imageToUpload.FileName;
 
-                        string uploadDir = AppDomain.CurrentDomain.BaseDirectory + "Images\\";
+                        string uploadDir = AppDomain.CurrentDomain.BaseDirectory + "UploadedImages\\";
                         //var imagePath = Path.Combine(Server.MapPath(uploadDir), imageToUpload.FileName);
                         //var imageUrl = Path.Combine(uploadDir, imageToUpload.FileName);
                         string filename = Path.GetFileName(imageToUpload.FileName);
@@ -134,8 +187,7 @@ namespace ImageShare.Controllers
                         break;
                     }
                 }
-
-
+                
                 return RedirectToAction("AddImages", "Images");
             }
 
@@ -164,6 +216,12 @@ namespace ImageShare.Controllers
             {
                 return al.AlbumID;
             }
+        }
+
+        public FileResult RenderImage(string filePath)
+        {
+            return File(filePath, "image/jpg");
+           
         }
 
     }

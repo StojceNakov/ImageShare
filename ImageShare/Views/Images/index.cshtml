@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "index";
+}
+
+<h2>index</h2>
+@foreach (var image in ViewBag.Images)
+{
+    <img src="@Url.Action("RenderImage", "Images", new { filePath = @image.ImageUrl })" width="500px" height="500px" />
+}
+
+@foreach (var album in ViewBag.Albums)
+{
+    @Html.ActionLink((string)@album.Name, "Index", new { albumId = @album.AlbumID })
+}
+
+
+
