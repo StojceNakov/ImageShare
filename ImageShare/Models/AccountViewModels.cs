@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web;
 
 namespace IdentitySample.Models
 {
@@ -76,6 +77,13 @@ namespace IdentitySample.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        public string Nickname { get; set; }
+
+        [Required]
+        [DataType(DataType.Upload)]
+        public HttpPostedFileBase ProfilePicture { get; set; }
     }
 
     public class ResetPasswordViewModel

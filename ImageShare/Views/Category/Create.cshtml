@@ -1,0 +1,27 @@
+﻿@model ImageShare.Models.CategoryViewModel
+@{
+    ViewBag.Title = "Create";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+
+    @using(@Html.BeginForm("Create", "Category", FormMethod.Post))
+    {
+     <div>
+        @Html.LabelFor(m => m.Name)
+        @Html.EditorFor(m => m.Name)
+    </div>
+        <div>
+            <button type="submit">Create category</button>
+        </div>
+    }
+
+</body>
+</html>

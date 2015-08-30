@@ -27,7 +27,7 @@ namespace IdentitySample
 
         protected void Application_Start()
         {
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<ImageShareDbContext>());
+            Database.SetInitializer(new ImageShareDbInitializer());
 
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

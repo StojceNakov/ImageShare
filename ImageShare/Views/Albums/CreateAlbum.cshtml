@@ -1,23 +1,33 @@
 ﻿@model ImageShare.Models.AlbumViewModel
 
 @{
-    ViewBag.Title = "CreateAlbum";
+    ViewBag.Title = "Create new album";
 }
 
-@using (@Html.BeginForm("CreateAlbum", "Albums", FormMethod.Post))
+@using (@Html.BeginForm("CreateAlbum", "Albums", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true);
 
-    <div>
-        @Html.LabelFor(m => m.Name);
-        @Html.TextBoxFor(m => m.Name);
+    <h4>@ViewBag.Title</h4>
+    <hr />
+
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        </div>
+
     </div>
 
-    <div>
-        <input type="submit" value="Create Album">
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+
+            <input type="submit" class="btn btn-default" value="Create Album">
+        </div>
+
     </div>
 }
-
-<h2>CreateAlbum</h2>
-

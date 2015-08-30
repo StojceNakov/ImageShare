@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using ImageShare.DataAccessLayer;
+using System.IO;
 
 namespace IdentitySample.Controllers
 {
@@ -150,7 +151,23 @@ namespace IdentitySample.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                string profilePictureUrl = "";
+
+                if(model.ProfilePicture != null && model.ProfilePicture.ContentLength > 0)
+                {
+
+                    string uploadDir = AppDomain.CurrentDomain.BaseDirectory + "UserProfilePictures\\";
+                    //var imagePath = Path.Combine(Server.MapPath(uploadDir), imageToUpload.FileName);
+                    //var imageUrl = Path.Combine(uploadDir, imageToUpload.FileName);
+                    string filename = Path.GetFileName(model.ProfilePicture.FileName);
+                    model.ProfilePicture.SaveAs(Path.Combine(uploadDir, filename));
+                    profilePictureUrl = Path.Combine(uploadDir, filename);
+                }
+
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email};
+                user.Nickname = model.Nickname;
+                user.ProfilePictureUrl = profilePictureUrl;
+
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -453,6 +470,24 @@ namespace IdentitySample.Controllers
                 }
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
+        }
+
+        public FileResult ProfilePicture()
+        {
+            string userId = HttpContext.User.Identity.GetUserId();
+            ApplicationDbContext context = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+            ApplicationUser user = context.Users.FirstOrDefault(u => u.Id == userId);
+
+            return File(user.ProfilePictureUrl, "image/jpg");
+        }
+
+        public string GetNickname()
+        {
+            ApplicationDbContext context = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+            string userId = HttpContext.User.Identity.GetUserId();
+            ApplicationUser user = context.Users.FirstOrDefault(u => u.Id == userId);
+
+            return user.Nickname;
         }
         #endregion
     }

@@ -7,7 +7,6 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity.Owin;
 using IdentitySample.Models;
-using ImageShare.Models;
 
 using System.Globalization;
 using Microsoft.AspNet.Identity;
@@ -42,7 +41,6 @@ namespace ImageShare.Controllers
                 album.Name = model.Name;
                 album.ApplicationUserID = HttpContext.User.Identity.GetUserId();
                 album.Type = AlbumType.Album;
-
                 ImagesContext.Albums.Add(album);
                 ImagesContext.SaveChanges();
 

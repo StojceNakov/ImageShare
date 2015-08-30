@@ -21,6 +21,7 @@ namespace ImageShare.Models
     {
         public long AlbumID { get; set; }
 
+        [Required(ErrorMessage = "Name field is required")]
         public string Name { get; set; }
 
         public int Type { get; set; }
@@ -34,15 +35,9 @@ namespace ImageShare.Models
     {
         public long ImageID { get; set; }
 
-        [Required]
         public string Title { get; set; }
 
-        public string AltText { get; set; }
-
-        [DataType(DataType.Html)]
-        public string Caption { get; set; }
-
-        [Required]
+        [Required(ErrorMessage = "You must select at least one picture!")]
         [DataType(DataType.ImageUrl)]
         public string ImageUrl { get; set; }
 
@@ -59,5 +54,21 @@ namespace ImageShare.Models
 
         public virtual Album ImageAlbum { get; set; }
 
+        public long CategoryID { get; set; }
+
+        public Category ImageCategory { get; set; }
+
+    }
+
+    public class Category
+    {
+        public long CategoryID { get; set; }
+
+        [Required(ErrorMessage = "Name field is required")]
+        public string Name { get; set; }
+
+        public virtual ICollection<Image> Images { get; set; }
+
+        
     }
 }

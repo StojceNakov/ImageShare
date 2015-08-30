@@ -17,7 +17,6 @@ namespace ImageShare.Controllers
     [Authorize]
     public class ImagesController : Controller
     {
-        private static List<Album> dropDownAlbums;
 
         //property for Images and Albums databases context
         public ImageShareDbContext ImagesContext
@@ -39,29 +38,38 @@ namespace ImageShare.Controllers
             string currentUserId = HttpContext.User.Identity.GetUserId();
             List<Album> albums = ImagesContext.Albums.Where(a => a.ApplicationUserID == currentUserId).ToList();
             List<Image> images = new List<Image>();
-
             Album album = null;
+            long AllPhotosCount = 0;
 
-            foreach(Album a in albums)
+            if (albumId > 0)
+                album = findAlbumById(albumId, albums);
+
+            if (albumId == -1)
+                album = findNoAlbum(albums);
+
+            foreach (var al in albums)
             {
-                if(albumId == -1)
+                if (albumId == 0)
                 {
-                    album = findNoAlbum(albums);
+                    images.AddRange(ImagesContext.Images.Where(i => i.AlbumID == al.AlbumID));
+                    AllPhotosCount = images.Count;
                 }
                 else
                 {
-                    album = findAlbumById(albumId, albums);
+                    AllPhotosCount += ImagesContext.Images.Where(i => i.AlbumID == al.AlbumID).Count();
                 }
-                    
+
             }
 
-            if(album != null)
+            if (album != null)
             {
                 images = ImagesContext.Images.Where(i => i.AlbumID == album.AlbumID).ToList();
             }
 
             ViewBag.Images = images;
             ViewBag.Albums = albums;
+            ViewBag.AlbumsCount = albums.Count;
+            ViewBag.AllPhotosCount = AllPhotosCount;
 
             return View();
         }
@@ -97,26 +105,24 @@ namespace ImageShare.Controllers
             ImageViewModel imagesView = new ImageViewModel();
             string currentUserId = HttpContext.User.Identity.GetUserId();
 
-            var albums = ImagesContext.Albums.Where(x => x.ApplicationUserID == currentUserId && x.Type != AlbumType.NoAlbum);
+            var albums = ImagesContext.Albums.Where(x => x.ApplicationUserID == currentUserId);
 
-            List<Album> al = new List<Album>();
-
-            Album defaultAlbum = new Album();
-            defaultAlbum.AlbumID = -1;
-            defaultAlbum.Name = "No Album";
-
-            al.Add(defaultAlbum);
-            foreach(Album a in albums)
+            if (albums.Count() == 0)
             {
-                al.Add(a);
+                initializeDefaultAlbum();
+                albums = ImagesContext.Albums.Where(x => x.ApplicationUserID == currentUserId);
             }
 
-            dropDownAlbums = new List<Album>(al);
+            var categories = ImagesContext.Categories.ToList();
 
-            SelectList selectlist = new SelectList(al.AsEnumerable(), "AlbumID", "Name");
+            SelectList selectlist = new SelectList(albums.AsEnumerable(), "AlbumID", "Name");
             imagesView.AlbumsDropDown = selectlist;
             imagesView.selectedAlbum = 1;
-            
+
+            SelectList selectCategories = new SelectList(categories.AsEnumerable(), "CategoryID", "Name");
+            imagesView.CategoriesDropDown = selectCategories;
+            imagesView.selectedCategory = 1;
+
             return View(imagesView);
         }
 
@@ -135,20 +141,28 @@ namespace ImageShare.Controllers
 
             if (model.FilesUpload == null || model.FilesUpload.Count() == 0)
             {
-                ModelState.AddModelError("FilesUpload", "This field is required");
+                ModelState.AddModelError("Upload image(s)", "This field is required");
             }
 
             if (ModelState.IsValid)
             {
-
-                Album selectedAlbum = dropDownAlbums.Find(a => a.AlbumID == model.selectedAlbum);
                 bool error = false;
+                LinkedList<string> imageTitles = new LinkedList<string>();
+
+                if(!String.IsNullOrEmpty(model.Title))
+                    imageTitles = new LinkedList<string>(model.Title.Split(',').ToList());
+
 
                 //System.Diagnostics.Debug.WriteLine("Image URL " + "asd");
 
+                int titleIndex = 0;
+
                 foreach (var imageToUpload in model.FilesUpload)
                 {
-                    if(!validImageTypes.Contains(imageToUpload.ContentType))
+                    if (imageToUpload == null)
+                        break;
+
+                    if (!validImageTypes.Contains(imageToUpload.ContentType))
                     {
                         ModelState.AddModelError("ImageUpload", "Please choose either a GIF, JPG or PNG image.");
                         error = true;
@@ -158,9 +172,13 @@ namespace ImageShare.Controllers
                     if (imageToUpload != null && imageToUpload.ContentLength > 0)
                     {
                         Image image = new Image();
-                        image.AltText = model.AltText;
-                        image.Caption = model.Caption;
-                        image.Title = imageToUpload.FileName;
+
+                        if (titleIndex < imageTitles.Count)
+                            image.Title = imageTitles.ElementAt(titleIndex);
+                        else
+                            image.Title = imageToUpload.FileName;
+
+                        ++titleIndex;
 
                         string uploadDir = AppDomain.CurrentDomain.BaseDirectory + "UploadedImages\\";
                         //var imagePath = Path.Combine(Server.MapPath(uploadDir), imageToUpload.FileName);
@@ -168,15 +186,8 @@ namespace ImageShare.Controllers
                         string filename = Path.GetFileName(imageToUpload.FileName);
                         imageToUpload.SaveAs(Path.Combine(uploadDir, filename));
                         image.ImageUrl = Path.Combine(uploadDir, filename);
-
-                        if (selectedAlbum.AlbumID != -1)
-                        {
-                            image.AlbumID = selectedAlbum.AlbumID;
-                        }
-                        else
-                        {
-                            image.AlbumID = this.initializeDefaultAlbum();
-                        }
+                        image.AlbumID = model.selectedAlbum;
+                        image.CategoryID = model.selectedCategory;
 
                         ImagesContext.Images.Add(image);
                         ImagesContext.SaveChanges();
@@ -187,41 +198,37 @@ namespace ImageShare.Controllers
                         break;
                     }
                 }
-                
+
                 return RedirectToAction("AddImages", "Images");
             }
 
             return RedirectToAction("AddImages", "Images");
         }
 
-        private long initializeDefaultAlbum()
+        private void initializeDefaultAlbum()
         {
             string currentUserId = HttpContext.User.Identity.GetUserId();
-            Album al = ImagesContext.Albums.Where(a => a.ApplicationUserID == currentUserId && a.Type == AlbumType.NoAlbum).FirstOrDefault();
 
-            if (al == null)
-            {
-                Album createDefaultAlbum = new Album();
-                createDefaultAlbum.ApplicationUserID = currentUserId;
-                createDefaultAlbum.Name = "No Album";
-                createDefaultAlbum.Type = AlbumType.NoAlbum;
+            Album createDefaultAlbum = new Album();
+            createDefaultAlbum.ApplicationUserID = currentUserId;
+            createDefaultAlbum.Name = "No Album";
+            createDefaultAlbum.Type = AlbumType.NoAlbum;
 
-                ImagesContext.Albums.Add(createDefaultAlbum);
-                ImagesContext.SaveChanges();
-                Album added = ImagesContext.Albums.Where(a => a.ApplicationUserID == currentUserId && a.Type == AlbumType.NoAlbum).FirstOrDefault();
-
-                return added.AlbumID;
-            }
-            else
-            {
-                return al.AlbumID;
-            }
+            ImagesContext.Albums.Add(createDefaultAlbum);
+            ImagesContext.SaveChanges();
         }
 
+        [AllowAnonymous]
         public FileResult RenderImage(string filePath)
         {
             return File(filePath, "image/jpg");
-           
+
+        }
+
+        [HttpGet]
+        public ActionResult CreateNewAlbum()
+        {
+            return PartialView(new AlbumViewModel());
         }
 
     }

@@ -126,8 +126,11 @@ namespace IdentitySample.Models
             }
 
             var user = userManager.FindByName(name);
+            
             if (user == null) {
                 user = new ApplicationUser { UserName = name, Email = name };
+                user.Nickname = "S.Nakov";
+                user.ProfilePictureUrl = "C:\\Users\\Stojce\\Desktop\\Development\\Proekti\\ImageShare\\ImageShare\\UserProfilePictures\\cv_picture_1.jpg";
                 var result = userManager.Create(user, password);
                 result = userManager.SetLockoutEnabled(user.Id, false);
             }
