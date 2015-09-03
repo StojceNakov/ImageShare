@@ -230,6 +230,5 @@ namespace ImageShare.Controllers
         {
             return PartialView(new AlbumViewModel());
         }
-
     }
 }

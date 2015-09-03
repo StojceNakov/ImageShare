@@ -112,5 +112,10 @@ namespace ImageShare.Controllers
                 return View();
             }
         }
+
+        public ActionResult CreateNewCategoryModal()
+        {
+            return PartialView(new CategoryViewModel());
+        }
     }
 }

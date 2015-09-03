@@ -94,3 +94,16 @@ input[type="checkbox"].input-validation-error {
     padding-left: 2em;
     padding-right: 2em;
 }
+
+.row-padding-images {
+
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.col-padding-images {
+
+    padding-left: 2em;
+    padding-right: 2em;
+    
+}

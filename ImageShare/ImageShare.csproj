@@ -156,6 +156,9 @@
     <Content Include="Views\Category\Create.cshtml" />
     <Content Include="Views\Category\Index.cshtml" />
     <Content Include="Views\Images\CreateNewAlbum.cshtml" />
+    <Content Include="Views\Profile\Index.cshtml" />
+    <Content Include="Views\Profile\NoUserError.cshtml" />
+    <Content Include="Views\Category\CreateNewCategoryModal.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -239,6 +242,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImagesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\RolesAdminController.cs" />
     <Compile Include="Controllers\UserAdminController.cs" />
     <Compile Include="DataAccessLayer\ImageShareDbContext.cs" />
@@ -246,6 +250,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="ImagesGridSystem\ContainerForImagesAndUsers.cs" />
+    <Compile Include="ImagesGridSystem\ImagesAndUsers.cs" />
+    <Compile Include="ImagesGridSystem\ImagesGridSystemLogic.cs" />
     <Compile Include="Migrations\ImageShareDbContext\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModel.cs" />

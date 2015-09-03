@@ -472,22 +472,63 @@ namespace IdentitySample.Controllers
             }
         }
 
-        public FileResult ProfilePicture()
+        [AllowAnonymous]
+        public FileResult ProfilePicture(string id = "")
         {
-            string userId = HttpContext.User.Identity.GetUserId();
             ApplicationDbContext context = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
-            ApplicationUser user = context.Users.FirstOrDefault(u => u.Id == userId);
+            ApplicationUser user = null;
+
+            if(id == "")
+            {
+                string userId = HttpContext.User.Identity.GetUserId();
+                user = context.Users.FirstOrDefault(u => u.Id == userId);
+            }
+            else
+            {
+                user = context.Users.FirstOrDefault(u => u.Id == id);
+            }
+            
 
             return File(user.ProfilePictureUrl, "image/jpg");
         }
 
-        public string GetNickname()
+        [AllowAnonymous]
+        public string GetNickname(string id = "")
         {
             ApplicationDbContext context = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
-            string userId = HttpContext.User.Identity.GetUserId();
-            ApplicationUser user = context.Users.FirstOrDefault(u => u.Id == userId);
+            ApplicationUser user = null;
+
+            if(id == "")
+            {
+                string userId = HttpContext.User.Identity.GetUserId();
+                user = context.Users.FirstOrDefault(u => u.Id == userId);
+            }
+            else
+            {
+                user = context.Users.FirstOrDefault(u => u.Id == id);
+            }
+            
 
             return user.Nickname;
+        }
+
+        public string GetEmail(string id = "")
+        {
+            ApplicationDbContext context = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+            ApplicationUser user = null;
+
+            if (id == "")
+            {
+                string userId = HttpContext.User.Identity.GetUserId();
+                user = context.Users.FirstOrDefault(u => u.Id == userId);
+            }
+            else
+            {
+                user = context.Users.FirstOrDefault(u => u.Id == id);
+            }
+
+
+            return user.Email;
         }
         #endregion
     }

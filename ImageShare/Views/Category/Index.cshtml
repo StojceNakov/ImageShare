@@ -7,7 +7,7 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create", "Category")
+    <div id="showDialog" class="btn btn-success">Create new category</div>
 </p>
 <table class="table">
     <tr>
@@ -27,10 +27,16 @@
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit")
-                @Html.ActionLink("Details", "Details")
                 @Html.ActionLink("Delete", "Delete")
             </td>
         </tr>
     }
 
 </table>
+
+<div id='albumModal' class='modal' data-url='@Url.Action("CreateNewCategoryModal")'>
+    <div id='modalContainer'>
+    </div>
+</div>
+
+<script src="~/Content/ModalCreateNewAlbum.js"></script>

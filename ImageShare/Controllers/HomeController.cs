@@ -13,15 +13,17 @@ using System.Web;
 using ImageShare.DataAccessLayer;
 using System.Collections.Generic;
 using ImageShare.Models;
+using ImageShare.ImagesGridSystem;
 
 
 namespace IdentitySample.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index(long categoryId = -1)
+        public ActionResult Index(long categoryId = -1, int imagesForARow = -1)
         {
             ImageShareDbContext imagesContext = HttpContext.GetOwinContext().Get<ImageShareDbContext>();
+            ApplicationDbContext usersContext = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
             LinkedList<Image> images = new LinkedList<Image>(imagesContext.Images.ToList());
 
             LinkedList<Category> categories = new LinkedList<Category>(imagesContext.Categories.ToList());
@@ -36,17 +38,41 @@ namespace IdentitySample.Controllers
             if(categoryId != -1)
             {
                 images = new LinkedList<Image>(imagesContext.Images.Where(i => i.CategoryID == categoryId).ToList());
-                ViewBag.Images = images;
                 ViewBag.PageDescription = "Category: " + imagesContext.Categories.Where(c => c.CategoryID == categoryId).FirstOrDefault().Name;
             }
             else
             {
-                ViewBag.Images = images.Take(images.Count() - 5);
+
+                int takeLastXImages = (int)(images.Count() * 0.3);
+                LinkedList<Image> temp = new LinkedList<Image>();
+
+                for (int i = images.Count() - 1; i >= images.Count() - takeLastXImages; --i)
+                {
+                    temp.AddLast(images.ElementAt(i));
+                }
+
+                images = new LinkedList<Image>(temp);
                 ViewBag.PageDescription = "Latest Images";
             }
 
+
+            if (imagesForARow == -1 && Session["byRow"] == null)
+            {
+                Session["byRow"] = 3;
+            }
+
+            if(imagesForARow != -1)
+            {
+                Session["byRow"] = imagesForARow;
+            }
+
+            int columns = (int)(Session["byRow"]);
+
             
+
             ViewBag.Categories = sidebarMenuData;
+            ViewBag.ImagesGrid = new ImagesGridSystemLogic(images, imagesContext, usersContext, columns).create();
+            ViewBag.columns = columns;
 
             return View();
         }
@@ -64,6 +90,11 @@ namespace IdentitySample.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public string getColumns(int col)
+        {
+            return (12/col).ToString();
         }
     }
 
