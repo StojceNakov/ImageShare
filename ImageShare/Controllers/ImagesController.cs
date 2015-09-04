@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System.Data.Entity;
 using IdentitySample.Models;
+using ImageShare.ImagesGridSystem;
 
 
 namespace ImageShare.Controllers
@@ -33,8 +34,9 @@ namespace ImageShare.Controllers
 
         //
         // GET: /ImageShare/
-        public ActionResult Index(long albumId = -1)
+        public ActionResult Index(long albumId = -1, int imagesForARow = -1)
         {
+            ApplicationDbContext usersDbContext = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
             string currentUserId = HttpContext.User.Identity.GetUserId();
             List<Album> albums = ImagesContext.Albums.Where(a => a.ApplicationUserID == currentUserId).ToList();
             List<Image> images = new List<Image>();
@@ -66,10 +68,26 @@ namespace ImageShare.Controllers
                 images = ImagesContext.Images.Where(i => i.AlbumID == album.AlbumID).ToList();
             }
 
-            ViewBag.Images = images;
+            int columns;
+
+            if (imagesForARow != -1)
+            {
+                Session["byRow"] = columns = imagesForARow;
+            }
+            else if (Session["byRow"] == null)
+            {
+                Session["byRow"] = columns = 3;
+            }
+            else
+            {
+                columns = (int)(Session["byRow"]);
+            }
+
+            ViewBag.ImagesGrid = new ImagesGridSystemLogic(new LinkedList<Image>(images), ImagesContext, usersDbContext, columns).create();
             ViewBag.Albums = albums;
             ViewBag.AlbumsCount = albums.Count;
             ViewBag.AllPhotosCount = AllPhotosCount;
+            ViewBag.columns = columns;
 
             return View();
         }
