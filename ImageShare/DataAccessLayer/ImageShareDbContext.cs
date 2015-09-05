@@ -19,6 +19,7 @@ namespace ImageShare.DataAccessLayer
         public DbSet<Album> Albums { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<ImageFavourites> ImageFavourites { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

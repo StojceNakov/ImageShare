@@ -7,7 +7,7 @@
     <div id="sidebar" class="colum">
         <div class="row sidebar-menu-row">
 
-            <div class="row sidebar-menu">
+            <div class="row sidebar-menu sidebar-menu-items">
 
                 <p>@Html.ActionLink("All photos", "Index", new { albumId = 0 }) <span class="badge pull-right">@ViewBag.AllPhotosCount</span></p>
 
@@ -18,14 +18,14 @@
                 <p>Albums <span class="badge pull-right">@ViewBag.AlbumsCount</span></p>
 
                 @foreach (var album in ViewBag.Albums)
-                {
-                    <div class="row menu-row-padding">
+{
+    <div class="row menu-row-padding sidebar-menu-items">
 
-                        @Html.ActionLink((string)@album.Name, "Index", new { albumId = @album.AlbumID })
+        @Html.ActionLink((string)@album.Name, "Index", new { albumId = @album.AlbumID })
 
 
-                    </div>
-                }
+    </div>
+}
 
             </div>
 
@@ -38,7 +38,7 @@
             <div class="row">
 
                 <div class="col-md-6">
-                    <h4>@ViewBag.PageDescription</h4>
+                    <h2>@ViewBag.PageDescription</h2>
                 </div>
 
                 <div class="col-md-6">
@@ -85,10 +85,10 @@
                     {
                         <div class='col-md-@Html.Action("getColumns", "Home", new { col = @ViewBag.columns })'>
 
-                            <div class="panel panel-primary">
+                            <div class="panel panel-default">
                                 <div class="panel-heading">
 
-                                    <h4>Image title: <small><span style="color: lightgray">@data.image.Title</span></small></h4>
+                                    <h4>Image title: <small><span style="color: darkgrey">@data.image.Title</span></small></h4>
                                 </div>
                                 <div class="panel-body">
                                     <div class="row">
@@ -98,7 +98,19 @@
                                     </div>
                                 </div>
                                 <div class="panel-footer">
-                                    <h4><span class="glyphicon glyphicon-arrow-right"> Times Favourited = 12</span></h4>
+                                    @if (Request.IsAuthenticated)
+                                    {
+                                        <div class="imageFavourites" data-url='@Url.Action("ToggleFavouriteImage", "Images", new { imageId = @data.image.ImageID })'>
+
+
+                                            @Html.Action("returnImageFavouritesWhenUserLogged", "Images", new { imageId = @data.image.ImageID })
+
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        @Html.Action("returnImageFavourites", "Images", new { imageId = @data.image.ImageID })
+                                    }
                                 </div>
                             </div>
 
@@ -112,7 +124,7 @@
             }
 
             <footer>
-                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+                <p>&copy; @DateTime.Now.Year - ImageShare</p>
             </footer>
         </div>
 

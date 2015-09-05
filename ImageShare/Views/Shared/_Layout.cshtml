@@ -8,61 +8,67 @@
     @Scripts.Render("~/bundles/modernizr")
     <link href="~/Content/Site.css" rel="stylesheet" />
 </head>
-<body>
+<body class="body-background">
     <div class="navbar navbar-inverse navbar-fixed-top navbar-custom">
-        <div class="row" style="max-width: 100%">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a href='@Url.Action("Index", "Home")' class="navbar-brand">
-                    <img src='@Url.Content("~/Content/Images/Logo.jpg")' height="35" style="width: 15.5em;"/>
-                </a>
-            </div>
-            <div class="navbar-collapse collapse">
+        <div class="container">
+            <div class="row" style="max-width: 100%">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href='@Url.Action("Index", "Home")' class="navbar-brand">
+                        <img src='@Url.Content("~/Content/Images/ImageShareLogo.jpg")' width="100em" height="40em" />
+                    </a>
+                </div>
+                <div class="navbar-collapse collapse">
 
-                <form class="navbar-form navbar-left" role="search">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search">
-                    </div>
-                    <button type="submit" class="btn btn-default">Submit</button>
-                </form>
+                    <form class="navbar-form navbar-right" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search">
+                        </div>
+                        <button type="submit" class="btn btn-default hidden">Submit</button>
+                    </form>
 
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <ul class="nav navbar-nav" style="padding-left: 3em;">
+                        <li><div class="top-menu-items"><span class="glyphicon glyphicon-home"></span> @Html.ActionLink("Home", "Index", "Home")</div></li>
 
-                    @if (Request.IsAuthenticated)
-                    {
+                        @if (Request.IsAuthenticated)
+                        {
 
-                        <li>
-                            @Html.ActionLink("Profile", "Index", "Images")
+                            <li>
+                                <div class="top-menu-items"><span class="glyphicon glyphicon-user"></span> @Html.ActionLink("Profile", "Index", "Images")</div>
 
-                        </li>
+                            </li>
 
-                        <li>
-                            <a href='@Url.Action("AddImages", "Images")'>
-                                <div class="btn btn-success"> Upload </div>
-                            </a>
-                        </li>
-                    }
+                            <li>
+                                <div class="top-menu-items"><span class="glyphicon glyphicon-upload"></span> @Html.ActionLink("Upload", "AddImages", "Images")</div>
+                            </li>
+                        }
 
-                    @if (Request.IsAuthenticated && User.IsInRole("Admin"))
-                    {
+                        @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                        {
 
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li>@Html.ActionLink("Roles", "Index", "RolesAdmin")</li>
-                                <li>@Html.ActionLink("Users", "Index", "UsersAdmin")</li>
-                                <li>@Html.ActionLink("Categories", "Index", "Category")</li>
-                            </ul>
-                        </li>
-                    }
-                </ul>
+                            <li class="dropdown">
 
-                @Html.Partial("_LoginPartial")
+                                <div class="top-menu-items">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin <span class="caret"></span></a>
+
+                                    <ul class="dropdown-menu">
+                                        <li>@Html.ActionLink("Roles", "Index", "RolesAdmin")</li>
+                                        <li>@Html.ActionLink("Users", "Index", "UsersAdmin")</li>
+                                        <li>@Html.ActionLink("Categories", "Index", "Category")</li>
+                                    </ul>
+                                </div>
+
+                                    
+</li>
+                        }
+                    </ul>
+
+                    @Html.Partial("_LoginPartial")
+                </div>
             </div>
         </div>
     </div>
@@ -76,7 +82,9 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+        @RenderSection("scripts", required: false)
     <script src="~/Content/ModalCreateNewAlbum.js"></script>
+    <script src="~/Content/FavouriteUnFavouriteImage.js"></script>
+    <script src="~/Content/Design.js"></script>
 </body>
 </html>

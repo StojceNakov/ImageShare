@@ -49,10 +49,19 @@ namespace ImageShare.Controllers
             long AllPhotosCount = 0;
 
             if (albumId > 0)
+            {
                 album = findAlbumById(albumId, albums);
-
-            if (albumId == -1)
+                ViewBag.PageDescription = album.Name;
+            }
+            else if (albumId == -1)
+            {
                 album = findNoAlbum(albums);
+                ViewBag.PageDescription = album.Name;
+            }
+            else
+                ViewBag.PageDescription = "All Photos";
+                
+                
 
             foreach (var al in albums)
             {
@@ -98,6 +107,7 @@ namespace ImageShare.Controllers
             ViewBag.AllPhotosCount = AllPhotosCount;
             ViewBag.ImagesGrid = new ImagesGridSystemLogic(images, ImagesContext, usersDbContext, columns).create();
             ViewBag.columns = columns;
+            ViewBag.UserId = profileUserId;
 
             return View();
         }

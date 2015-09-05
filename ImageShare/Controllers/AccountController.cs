@@ -473,19 +473,19 @@ namespace IdentitySample.Controllers
         }
 
         [AllowAnonymous]
-        public FileResult ProfilePicture(string id = "")
+        public FileResult ProfilePicture(string userId = "")
         {
             ApplicationDbContext context = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
             ApplicationUser user = null;
 
-            if(id == "")
+            if(userId == "")
             {
-                string userId = HttpContext.User.Identity.GetUserId();
-                user = context.Users.FirstOrDefault(u => u.Id == userId);
+                string Id = HttpContext.User.Identity.GetUserId();
+                user = context.Users.FirstOrDefault(u => u.Id == Id);
             }
             else
             {
-                user = context.Users.FirstOrDefault(u => u.Id == id);
+                user = context.Users.FirstOrDefault(u => u.Id == userId);
             }
             
 
@@ -512,6 +512,7 @@ namespace IdentitySample.Controllers
             return user.Nickname;
         }
 
+        [AllowAnonymous]
         public string GetEmail(string id = "")
         {
             ApplicationDbContext context = HttpContext.GetOwinContext().Get<ApplicationDbContext>();

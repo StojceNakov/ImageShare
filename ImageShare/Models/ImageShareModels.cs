@@ -71,4 +71,13 @@ namespace ImageShare.Models
 
         
     }
+
+    public class ImageFavourites
+    {
+        public long ImageFavouritesID { get; set; }
+
+        public long ImageID { get; set; }
+
+        public string UserID { get; set; }
+    }
 }

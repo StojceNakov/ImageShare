@@ -145,6 +145,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Design.js" />
+    <Content Include="Content\FavouriteUnFavouriteImage.js" />
     <Content Include="Content\ModalCreateNewAlbum.js" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -159,6 +161,8 @@
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Profile\NoUserError.cshtml" />
     <Content Include="Views\Category\CreateNewCategoryModal.cshtml" />
+    <Content Include="Views\Images\ImageFavouritesImageFavouritedByUser.cshtml" />
+    <Content Include="Views\Images\ImageFavouritesImageNotFavouritedByUser.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -253,7 +257,7 @@
     <Compile Include="ImagesGridSystem\ContainerForImagesAndUsers.cs" />
     <Compile Include="ImagesGridSystem\ImagesAndUsers.cs" />
     <Compile Include="ImagesGridSystem\ImagesGridSystemLogic.cs" />
-    <Compile Include="Migrations\ImageShareDbContext\Configuration.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />

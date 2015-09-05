@@ -12,13 +12,13 @@
                 <p>By category <span class="badge pull-right">@ViewBag.CategoriesCount</span></p>
 
                 @foreach (var cat in ViewBag.Categories)
-                {
-                    <div class="row menu-row-padding">
+{
+    <div class="row menu-row-padding sidebar-menu-items">
 
-                        <p>@Html.ActionLink((string)@cat.category.Name, "Index", new { categoryId = @cat.category.CategoryID }) <span class="badge pull-right">@cat.count</span></p>
+        <p>@Html.ActionLink((string)@cat.category.Name, "Index", "Home", new { categoryId = @cat.category.CategoryID }, null) <span class="badge pull-right">@cat.count</span></p>
 
-                    </div>
-                }
+    </div>
+}
 
             </div>
 
@@ -31,7 +31,7 @@
             <div class="row">
 
                 <div class="col-md-6">
-                    <h4>@ViewBag.PageDescription</h4>
+                    <h2>@ViewBag.PageDescription</h2>
                 </div>
 
                 <div class="col-md-6">
@@ -83,14 +83,14 @@
                                 <div class="row">
 
                                     <div class="col-md-1">
-                                        <img src='@Url.Action("ProfilePicture", "Account", new { id = data.user.Id })' width="55em" height="55em" style="padding-top: 0.5em; padding-bottom: 0.5em" class="img-circle center-block" />
+                                        <img src='@Url.Action("ProfilePicture", "Account", new { userId = @data.user.Id })' width="55em" height="55em" style="padding-top: 0.5em; padding-bottom: 0.5em" class="img-circle center-block" />
                                     </div>
 
                                     <div class="col-md-1"></div>
 
                                     <div class="col-md-1">
 
-                                        <a href='@Url.Action("Index", "Profile", new { userId = data.user.Id })' style="padding-top: 2em;" class="pull-left">
+                                        <a href='@Url.Action("Index", "Profile", new { userId = @data.user.Id })' style="padding-top: 2em;" class="pull-left">
                                             @data.user.Nickname
                                         </a>
                                     </div>
@@ -107,7 +107,19 @@
 
                                 <div class="row">
 
-                                    <h5>S.favourites</h5>
+                                    @if (Request.IsAuthenticated)
+                                    {
+                                        <div class="imageFavourites" data-url='@Url.Action("ToggleFavouriteImage", "Images", new { imageId = @data.image.ImageID })'>
+
+
+                                            @Html.Action("returnImageFavouritesWhenUserLogged", "Images", new { imageId = @data.image.ImageID })
+
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        @Html.Action("returnImageFavourites", "Images", new { imageId = @data.image.ImageID })
+                                    }
 
                                 </div>
 
@@ -123,8 +135,9 @@
             }
 
             <footer>
-                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+                <p>&copy; @DateTime.Now.Year - ImageShare</p>
             </footer>
+
         </div>
 
     </div>

@@ -15,7 +15,6 @@ using ImageShare.ImagesGridSystem;
 
 namespace ImageShare.Controllers
 {
-    [Authorize]
     public class ImagesController : Controller
     {
 
@@ -44,10 +43,18 @@ namespace ImageShare.Controllers
             long AllPhotosCount = 0;
 
             if (albumId > 0)
+            {
                 album = findAlbumById(albumId, albums);
-
-            if (albumId == -1)
+                ViewBag.PageDescription = album.Name;
+            }
+            else if (albumId == -1)
+            {
                 album = findNoAlbum(albums);
+                ViewBag.PageDescription = album.Name;
+            }
+            else
+                ViewBag.PageDescription = "All Photos";
+                
 
             foreach (var al in albums)
             {
@@ -167,7 +174,7 @@ namespace ImageShare.Controllers
                 bool error = false;
                 LinkedList<string> imageTitles = new LinkedList<string>();
 
-                if(!String.IsNullOrEmpty(model.Title))
+                if (!String.IsNullOrEmpty(model.Title))
                     imageTitles = new LinkedList<string>(model.Title.Split(',').ToList());
 
 
@@ -247,6 +254,90 @@ namespace ImageShare.Controllers
         public ActionResult CreateNewAlbum()
         {
             return PartialView(new AlbumViewModel());
+        }
+
+        public ActionResult ToggleFavouriteImage(long imageId)
+        {
+            string userId = HttpContext.User.Identity.GetUserId();
+
+            if(!Request.IsAuthenticated)
+            {
+                RedirectToActionPermanent("Login", "Account");
+            }
+
+            if(ImagesContext.Images.Any(i => i.ImageID == imageId))
+            {
+                ImageFavourites allreadyFavourited = ImagesContext.ImageFavourites.Where(u => u.UserID == userId && u.ImageID == imageId).FirstOrDefault();
+
+                if(allreadyFavourited == null)
+                {
+                    ImageFavourites addNewFav = new ImageFavourites();
+
+                    addNewFav.ImageID = imageId;
+                    addNewFav.UserID = userId;
+
+                    ImagesContext.ImageFavourites.Add(addNewFav);
+                    ImagesContext.SaveChanges();
+                }
+                else
+                {
+                    ImagesContext.ImageFavourites.Remove(allreadyFavourited);
+                    ImagesContext.SaveChanges();
+                }
+
+
+            }
+
+            return returnImageFavouritesWhenUserLogged(imageId);
+        }
+
+        public void DeleteFavouritesWhenUserDeleted(string userId)
+        {
+            List<ImageFavourites> toDelete = ImagesContext.ImageFavourites.Where(u => u.UserID == userId).ToList();
+
+            foreach (var item in toDelete)
+            {
+                ImagesContext.ImageFavourites.Remove(item);
+            }
+
+            ImagesContext.SaveChanges();
+        }
+
+        public void DeleteFavouritesWhenImageDeleted(long imageId)
+        {
+            List<ImageFavourites> toDelete = ImagesContext.ImageFavourites.Where(i => i.ImageID == imageId).ToList();
+
+            foreach (var item in toDelete)
+            {
+                ImagesContext.ImageFavourites.Remove(item);
+            }
+
+            ImagesContext.SaveChanges();
+        }
+
+        public ActionResult returnImageFavourites(long imageId)
+        {
+            string count = ImagesContext.ImageFavourites.Where(i => i.ImageID == imageId).Count().ToString();
+            ViewBag.Count = count;
+
+            return PartialView("ImageFavouritesImageNotFavouritedByUser");
+        }
+
+        public ActionResult returnImageFavouritesWhenUserLogged(long imageId)
+        {
+            string userId = HttpContext.User.Identity.GetUserId();
+
+            string count = ImagesContext.ImageFavourites.Where(i => i.ImageID == imageId).Count().ToString();
+            ViewBag.Count = count;
+            
+            if(ImagesContext.ImageFavourites.Any(x => x.ImageID == imageId && x.UserID == userId))
+            {
+                return PartialView("ImageFavouritesImageFavouritedByUser");
+            }
+            else
+            {
+                return PartialView("ImageFavouritesImageNotFavouritedByUser");
+            }
         }
     }
 }
