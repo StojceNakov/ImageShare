@@ -508,8 +508,12 @@ namespace IdentitySample.Controllers
                 user = context.Users.FirstOrDefault(u => u.Id == id);
             }
             
-
-            return user.Nickname;
+            if(user != null)
+                return user.Nickname;
+            else
+            {
+                return "null";
+            }
         }
 
         [AllowAnonymous]

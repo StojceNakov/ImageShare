@@ -148,6 +148,7 @@
     <Content Include="Content\Design.js" />
     <Content Include="Content\FavouriteUnFavouriteImage.js" />
     <Content Include="Content\ModalCreateNewAlbum.js" />
+    <Content Include="Content\ModalEditCategory.js" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
@@ -163,6 +164,8 @@
     <Content Include="Views\Category\CreateNewCategoryModal.cshtml" />
     <Content Include="Views\Images\ImageFavouritesImageFavouritedByUser.cshtml" />
     <Content Include="Views\Images\ImageFavouritesImageNotFavouritedByUser.cshtml" />
+    <Content Include="Views\Home\NoCategory.cshtml" />
+    <Content Include="Views\Category\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

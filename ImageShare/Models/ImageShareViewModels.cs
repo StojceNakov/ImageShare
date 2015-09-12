@@ -46,5 +46,7 @@ namespace ImageShare.Models
         [Required(ErrorMessage = "Name field is required")]
         [Display(Name = "Name")]
         public string Name { get; set; }
+
+        public string OldName { get; set; }
     }
 }

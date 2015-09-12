@@ -26,8 +26,8 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit")
-                @Html.ActionLink("Delete", "Delete")
+                <a href="#" class="edit" data-url="/@item.CategoryID">Edit</a>
+                @Html.ActionLink("Delete", "Delete", "Category", new { id = @item.CategoryID }, null)
             </td>
         </tr>
     }
@@ -39,4 +39,10 @@
     </div>
 </div>
 
+<div id='editCategory' class='modal' data-url='@Url.Action("Edit")'>
+    <div id='editModal'>
+    </div>
+</div>
+
 <script src="~/Content/ModalCreateNewAlbum.js"></script>
+<script src="~/Content/ModalEditCategory.js"></script>

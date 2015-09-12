@@ -52,3 +52,4 @@ C:\Users\Stojce\Desktop\Development\Proekti\ImageShare\ImageShare\bin\System.Web
 C:\Users\Stojce\Desktop\Development\Proekti\ImageShare\ImageShare\bin\System.Web.WebPages.Razor.xml
 C:\Users\Stojce\Desktop\Development\Proekti\ImageShare\ImageShare\obj\Debug\ImageShare.dll
 C:\Users\Stojce\Desktop\Development\Proekti\ImageShare\ImageShare\obj\Debug\ImageShare.pdb
+C:\Users\Stojce\Desktop\Development\Proekti\ImageShare\ImageShare\obj\Debug\ImageShare.csprojResolveAssemblyReference.cache

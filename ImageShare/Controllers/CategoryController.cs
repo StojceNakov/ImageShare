@@ -67,33 +67,57 @@ namespace ImageShare.Controllers
 
         //
         // GET: /Category/Edit/5
+        [HttpGet]
         public ActionResult Edit(int id)
         {
-            return View();
+            Category cat = ImagesContext.Categories.Where(c => c.CategoryID == id).First();
+            CategoryViewModel category = new CategoryViewModel();
+
+            category.Name = cat.Name;
+            category.OldName = cat.Name;
+          
+            return PartialView(category);
         }
 
         //
         // POST: /Category/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(CategoryViewModel model)
         {
-            try
-            {
-                // TODO: Add update logic here
+            Category cat = ImagesContext.Categories.Where(c => c.Name == model.OldName).First();
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            ImagesContext.Categories.Remove(cat);
+            ImagesContext.SaveChanges();
+
+            cat.Name = model.Name;
+            ImagesContext.Categories.Add(cat);
+            ImagesContext.SaveChanges();
+
+            return RedirectToAction("Index");
         }
 
         //
         // GET: /Category/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            if(ImagesContext.Categories.Any(c => c.CategoryID == id))
+            {
+                long uncategorizedId = ImagesContext.Categories.Where(c => c.Name == "Uncategorized").First().CategoryID;
+
+                foreach(Image i in ImagesContext.Images.Where(i => i.CategoryID == id).ToList())
+                {
+                    ImagesContext.Images.Remove(i);
+
+                    i.CategoryID = uncategorizedId;
+                    ImagesContext.Images.Add(i);
+                    ImagesContext.SaveChanges();
+                }
+
+                ImagesContext.Categories.Remove(ImagesContext.Categories.Where(c => c.CategoryID == id).First());
+                ImagesContext.SaveChanges();
+            }
+
+            return RedirectToAction("Index");
         }
 
         //

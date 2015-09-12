@@ -5,24 +5,36 @@
 <div class="row" style="padding-top: 2em">
 
     <div id="sidebar" class="colum">
+
         <div class="row sidebar-menu-row">
 
+            <div class="row sidebar-menu">
+
+                <div class="row menu-row-padding sidebar-menu-items">
+                    <p>@Html.ActionLink("Top Favourited", "TopFavourited", "Home") <span class="glyphicon glyphicon-star pull-right" style="color: indianred; font-size: 1.8em"></span></p>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="row sidebar-menu-row">
             <div class="row sidebar-menu">
 
                 <p>By category <span class="badge pull-right">@ViewBag.CategoriesCount</span></p>
 
                 @foreach (var cat in ViewBag.Categories)
-{
-    <div class="row menu-row-padding sidebar-menu-items">
+                {
+                    <div class="row menu-row-padding sidebar-menu-items">
 
-        <p>@Html.ActionLink((string)@cat.category.Name, "Index", "Home", new { categoryId = @cat.category.CategoryID }, null) <span class="badge pull-right">@cat.count</span></p>
+                        <p>@Html.ActionLink((string)@cat.category.Name, "ByCategory", "Home", new { categoryid = @cat.category.CategoryID }, null) <span class="badge pull-right">@cat.count</span></p>
 
-    </div>
-}
+                    </div>
+                }
 
             </div>
-
         </div>
+
     </div>
 
     <div id="content" class="column">
@@ -101,7 +113,21 @@
 
                                 <div class="row">
 
-                                    <img src="@Url.Action("RenderImage", "Images", new { filePath = @data.image.ImageUrl })" class="img-responsive img-rounded img-thumbnail" />
+                                    <div class="showText">
+                                        <div class="carousel slide" data-ride="carousel">
+                                            <div class="carousel-inner">
+                                                <div class="item active" style="background-color: darkgoldenrod;">
+                                                    <img src="@Url.Action("RenderImage", "Images", new { filePath = @data.image.ImageUrl })" class="img-responsive img-rounded img-thumbnail blurImage" />
+                                                    <div class="carousel-caption invisible tekst">
+                                                        <p style="font-weight: bold; color: burlywood">Click for full size!</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    
 
                                 </div>
 
@@ -137,6 +163,8 @@
             <footer>
                 <p>&copy; @DateTime.Now.Year - ImageShare</p>
             </footer>
+
+            <script src="~/Content/Design.js"></script>
 
         </div>
 

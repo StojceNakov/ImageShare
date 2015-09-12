@@ -145,4 +145,8 @@ background-image: url("/Content/Images/dots-pattern.jpg");
     border-left: solid 7px;
 }
 
+.invisible {
+    display: none;
+}
+
 
