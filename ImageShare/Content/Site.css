@@ -1,8 +1,10 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
-    color: darkgoldenrod;
+    color: crimson;
     font-weight: bold;
+    font-size: medium;
+    font-family: 'Modern No. 20', 'Sylfaen';
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -46,19 +48,20 @@ input[type="checkbox"].input-validation-error {
 #sidebar, #content {
     position: absolute;
     top: 0;
+    margin-top: -3em;
     bottom: 0;
     padding-top: 7em;
 }
 #sidebar { 
     left: 0; 
-    width: 15em; 
+    width: 15em;
     background: black;
     color: white;
 
 }
 #content {
     padding-left: 2em;
-    left: 15em; 
+    left: 15em;
     right: 0;
     overflow-x: hidden;
 }
@@ -92,7 +95,6 @@ input[type="checkbox"].input-validation-error {
 }
 
 .menu-row-padding {
-
     padding-left: 2em;
     padding-right: 2em;
 }
@@ -115,19 +117,19 @@ background-image: url("/Content/Images/dots-pattern.jpg");
 }
 
 .top-menu-items {
-    padding-top: 2.5em; 
+    padding-top: 1em; 
+    margin-left: 1em;
+    
     padding-right: 1.5em;
     font-size: 1.2em;
     text-decoration: none;
 }
 
 .top-menu-items a {
-
    text-decoration: none;
 }
 
 .top-menu-border {
-
    border-top: solid 7px;
 }
 

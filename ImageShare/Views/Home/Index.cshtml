@@ -119,7 +119,7 @@
                                                 <div class="item active" style="background-color: darkgoldenrod;">
                                                     <img src="@Url.Action("RenderImage", "Images", new { filePath = @data.image.ImageUrl })" class="img-responsive img-rounded img-thumbnail blurImage" />
                                                     <div class="carousel-caption invisible tekst">
-                                                        <p style="font-weight: bold; color: burlywood">Click for full size!</p>
+                                                        <a style="font-weight: bold; color: burlywood;" target="_blank" href="@Url.Action("RenderImage", "Images", new { filePath = @data.image.ImageUrl })">Click for full size! </a>
                                                     </div>
                                                 </div>
                                             </div>

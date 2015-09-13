@@ -147,6 +147,7 @@
   <ItemGroup>
     <Content Include="Content\Design.js" />
     <Content Include="Content\FavouriteUnFavouriteImage.js" />
+    <Content Include="Content\ImageMeLogo.png" />
     <Content Include="Content\ModalCreateNewAlbum.js" />
     <Content Include="Content\ModalEditCategory.js" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
