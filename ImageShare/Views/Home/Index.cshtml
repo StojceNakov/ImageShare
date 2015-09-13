@@ -2,7 +2,7 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="row" style="padding-top: 2em">
+<div class="row" style="padding-top: 1em">
 
     <div id="sidebar" class="colum">
 
@@ -114,12 +114,18 @@
                                 <div class="row">
 
                                     <div class="showText">
+
+                                        <div class="showImageModal" data-url="@Url.Action("ShowImage", "Home", new { imgUrl = @data.image.ImageUrl, title = @data.image.Title })">
+                                        </div>
+
                                         <div class="carousel slide" data-ride="carousel">
                                             <div class="carousel-inner">
                                                 <div class="item active" style="background-color: darkgoldenrod;">
-                                                    <img src="@Url.Action("RenderImage", "Images", new { filePath = @data.image.ImageUrl })" class="img-responsive img-rounded img-thumbnail blurImage" />
+
+                                                        <img src="@Url.Action("RenderImage", "Images", new { filePath = @data.image.ImageUrl })" class="img-responsive img-rounded img-thumbnail blurImage" />
+                                                    
                                                     <div class="carousel-caption invisible tekst">
-                                                        <a style="font-weight: bold; color: burlywood;" target="_blank" href="@Url.Action("RenderImage", "Images", new { filePath = @data.image.ImageUrl })">Click for full size! </a>
+                                                        <p style="font-weight: bold; color: burlywood">Click for full size!</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -164,7 +170,9 @@
                 <p>&copy; @DateTime.Now.Year - ImageShare</p>
             </footer>
 
-            <script src="~/Content/Design.js"></script>
+            <div id="showImageModal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
+
+            </div>
 
         </div>
 

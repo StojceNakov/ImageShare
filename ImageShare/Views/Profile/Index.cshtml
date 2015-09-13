@@ -138,7 +138,24 @@
                                 <div class="panel-body">
                                     <div class="row">
 
-                                        <img src="@Url.Action("RenderImage", "Images", new { filePath = @data.image.ImageUrl })" class="img-responsive" />
+                                        <div class="showText">
+
+                                            <div class="showImageModal" data-url="@Url.Action("ShowImage", "Home", new { imgUrl = @data.image.ImageUrl, title = @data.image.Title })">
+                                            </div>
+
+                                            <div class="carousel slide" data-ride="carousel">
+                                                <div class="carousel-inner">
+                                                    <div class="item active" style="background-color: darkgoldenrod;">
+
+                                                        <img src="@Url.Action("RenderImage", "Images", new { filePath = @data.image.ImageUrl })" class="img-responsive img-rounded img-thumbnail blurImage" />
+
+                                                        <div class="carousel-caption invisible tekst">
+                                                            <p style="font-weight: bold; color: burlywood">Click for full size!</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
                                     </div>
                                 </div>
@@ -172,7 +189,9 @@
                 <p>&copy; @DateTime.Now.Year - ImageShare</p>
             </footer>
 
-        </div>
+            <div id="showImageModal" class="modal fade" role="dialog" tabindex="-1" aria-hidden="true">
+
+            </div>
 
     </div>
 

@@ -1,5 +1,4 @@
-﻿$(document).ready(function()
-{
+﻿$(document).ready(function () {
 
     $(".top-menu-items").hover(function () {
 
@@ -9,7 +8,7 @@
     function () {
 
         $(this).removeClass("top-menu-border");
-    })
+    });
 
     $(".sidebar-menu-items").hover(function () {
 
@@ -19,7 +18,7 @@
     function () {
 
         $(this).removeClass("sidebar-menu-border");
-    })
+    });
 
 
     $(".blurImage").hover(function () {
@@ -30,14 +29,14 @@
     function () {
         $(this).css('cursor', '');
         $(this).fadeTo(10, 1);
-    })
+    });
 
-    $(".showText").hover(function(){
+    $(".showText").hover(function () {
 
         $(this).find(".tekst").removeClass("invisible", 10, "easeOutBounce");
     },
     function () {
 
         $(this).find(".tekst").addClass("invisible", 10, "easeOutBounce");
-    })
-})
+    });
+});

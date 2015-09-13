@@ -147,9 +147,9 @@
   <ItemGroup>
     <Content Include="Content\Design.js" />
     <Content Include="Content\FavouriteUnFavouriteImage.js" />
-    <Content Include="Content\ImageMeLogo.png" />
     <Content Include="Content\ModalCreateNewAlbum.js" />
     <Content Include="Content\ModalEditCategory.js" />
+    <Content Include="Content\ShowImageModal.js" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
@@ -167,6 +167,8 @@
     <Content Include="Views\Images\ImageFavouritesImageNotFavouritedByUser.cshtml" />
     <Content Include="Views\Home\NoCategory.cshtml" />
     <Content Include="Views\Category\Edit.cshtml" />
+    <Content Include="Views\Home\Search.cshtml" />
+    <Content Include="Views\Home\ShowImage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

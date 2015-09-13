@@ -82,6 +82,7 @@ namespace IdentitySample.Models
         public string Nickname { get; set; }
 
         [Required]
+        [Display(Name = "Profile Picture")]
         [DataType(DataType.Upload)]
         public HttpPostedFileBase ProfilePicture { get; set; }
     }

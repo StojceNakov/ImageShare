@@ -49,4 +49,9 @@ namespace ImageShare.Models
 
         public string OldName { get; set; }
     }
+
+    public class Search
+    {
+        public string SearchWord { get; set; }
+    }
 }

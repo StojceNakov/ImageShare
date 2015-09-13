@@ -94,55 +94,6 @@ namespace IdentitySample.Controllers
             return View();
         }
 
-        public ActionResult SearchByName(String imageName = "", int imagesForARow = -1)
-        {
-            LinkedList<Image> images = new LinkedList<Image>(imagesContext.Images.ToList());
-
-            LinkedList<Category> categories = new LinkedList<Category>(imagesContext.Categories.ToList());
-            LinkedList<CategoriesAndCounts> sidebarMenuData = new LinkedList<CategoriesAndCounts>();
-
-            foreach (var cat in categories)
-            {
-                long catCount = imagesContext.Images.Where(i => i.CategoryID == cat.CategoryID).Count();
-                sidebarMenuData.AddLast(new CategoriesAndCounts { category = cat, count = catCount });
-            }
-
-            
-            LinkedList<Image> matchingImages = new LinkedList<Image>();
-
-            foreach (var img in images)
-            {
-                if (img.Title.Contains(imageName))
-                {
-                    matchingImages.AddLast(img);
-                }
-            }
-
-            images = new LinkedList<Image>(matchingImages);
-            ViewBag.PageDescription = "Your search results";
-
-
-            if (imagesForARow == -1 && Session["byRow"] == null)
-            {
-                Session["byRow"] = 3;
-            }
-
-            if (imagesForARow != -1)
-            {
-                Session["byRow"] = imagesForARow;
-            }
-
-            int columns = (int)(Session["byRow"]);
-
-
-
-            ViewBag.Categories = sidebarMenuData;
-            ViewBag.ImagesGrid = new ImagesGridSystemLogic(images, imagesContext, usersContext, columns).create();
-            ViewBag.columns = columns;
-
-            return View("Index");
-        }
-
         public ActionResult ByCategory(long categoryid, int imagesForARow = -1)
         {
 
@@ -246,6 +197,66 @@ namespace IdentitySample.Controllers
             }
 
             #endregion
+        }
+
+        public ActionResult Search()
+        {
+            return PartialView(new Search());
+        }
+
+        [HttpPost]
+        public ActionResult Search(Search model)
+        {
+            LinkedList<Image> images = new LinkedList<Image>();
+
+            LinkedList<Category> categories = new LinkedList<Category>(imagesContext.Categories.ToList());
+            LinkedList<CategoriesAndCounts> sidebarMenuData = new LinkedList<CategoriesAndCounts>();
+
+            foreach (var cat in categories)
+            {
+                long catCount = imagesContext.Images.Where(i => i.CategoryID == cat.CategoryID).Count();
+                sidebarMenuData.AddLast(new CategoriesAndCounts { category = cat, count = catCount });
+            }
+
+            foreach(Image img in imagesContext.Images.ToList())
+            {
+                if(img.Title.ToLower().Contains(model.SearchWord.ToLower()))
+                {
+                    images.AddLast(img);
+                }
+            }
+
+            if(images.Count == 0)
+            {
+                ViewBag.PageDescription = "No images found with title: " + model.SearchWord;
+            }
+            else
+                ViewBag.PageDescription = "Search Images";
+
+
+            if (Session["byRow"] == null)
+            {
+                Session["byRow"] = 3;
+            }
+
+            int columns = (int)(Session["byRow"]);
+
+
+
+            ViewBag.Categories = sidebarMenuData;
+            ViewBag.ImagesGrid = new ImagesGridSystemLogic(images, imagesContext, usersContext, columns).create();
+            ViewBag.columns = columns;
+
+
+            return View("Index");
+        }
+
+        [HttpGet]
+        public ActionResult ShowImage(string imgUrl, string title)
+        {
+            ViewBag.ImageUrl = imgUrl;
+            ViewBag.Title = title;
+            return PartialView();
         }
 
 
