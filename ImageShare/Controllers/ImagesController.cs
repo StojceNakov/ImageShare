@@ -50,7 +50,11 @@ namespace ImageShare.Controllers
             else if (albumId == -1)
             {
                 album = findNoAlbum(albums);
-                ViewBag.PageDescription = album.Name;
+
+                if (album != null)
+                    ViewBag.PageDescription = album.Name;
+                else
+                    ViewBag.PageDescription = "";
             }
             else
                 ViewBag.PageDescription = "All Photos";
@@ -338,6 +342,56 @@ namespace ImageShare.Controllers
             {
                 return PartialView("ImageFavouritesImageNotFavouritedByUser");
             }
+        }
+
+        [HttpGet]
+        public ActionResult EditImage(string imgUrl, string title)
+        {
+            Image img = ImagesContext.Images.Where(i => i.ImageUrl == imgUrl).FirstOrDefault();
+
+            EditImageViewModel edit = new EditImageViewModel();
+            edit.Title = img.Title;
+            edit.ImageId = img.ImageID;
+
+            ViewBag.ImageUrl = imgUrl;
+            ViewBag.Title = title;
+            return PartialView(edit);
+        }
+
+        [HttpPost]
+        public ActionResult EditImage(EditImageViewModel edited)
+        {
+            Image img = ImagesContext.Images.Where(i => i.ImageID == edited.ImageId).FirstOrDefault();
+
+
+            if(TryUpdateModel(img))
+            {
+                img.Title = edited.Title;
+                ImagesContext.SaveChanges();
+            }
+
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult DeleteImage(long imgId)
+        {
+            Image img = ImagesContext.Images.Where(i => i.ImageID == imgId).FirstOrDefault();
+
+            if(ImagesContext.ImageFavourites.Any(i => i.ImageID == img.ImageID))
+            {
+                foreach(ImageFavourites fav in ImagesContext.ImageFavourites.Where(i => i.ImageID == img.ImageID).ToList())
+                {
+                    ImagesContext.ImageFavourites.Remove(fav);
+                }
+
+                ImagesContext.SaveChanges();
+            }
+
+            ImagesContext.Images.Remove(img);
+            ImagesContext.SaveChanges();
+
+            return RedirectToAction("Index");
         }
     }
 }

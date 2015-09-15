@@ -46,12 +46,14 @@ namespace ImageShare.ImagesGridSystem
                     Image img = new Image();
                     img = Images.ElementAt(imgIndex);
 
-                    long albumid = img.AlbumID;
-                    string userid = ImageShareDatabase.Albums.Where(a => a.AlbumID == albumid).FirstOrDefault().ApplicationUserID;
 
-                    ApplicationUser user = UsersDatabase.Users.Where(u => u.Id == userid).FirstOrDefault();
+                        long albumid = img.AlbumID;
+                        string userid = ImageShareDatabase.Albums.Where(a => a.AlbumID == albumid).FirstOrDefault().ApplicationUserID;
 
-                    tempContainer.imagesAndUsers.AddLast(new ImagesAndUsers { image = img, user = user });
+                        ApplicationUser user = UsersDatabase.Users.Where(u => u.Id == userid).FirstOrDefault();
+
+                        tempContainer.imagesAndUsers.AddLast(new ImagesAndUsers { image = img, user = user });
+
 
                     ++imgIndex;
                 }
@@ -66,12 +68,15 @@ namespace ImageShare.ImagesGridSystem
                 Image img = new Image();
                 img = Images.ElementAt(i);
 
-                long albumid = img.AlbumID;
-                string userid = ImageShareDatabase.Albums.Where(a => a.AlbumID == albumid).FirstOrDefault().ApplicationUserID;
 
-                ApplicationUser user = UsersDatabase.Users.Where(u => u.Id == userid).FirstOrDefault();
+                    long albumid = img.AlbumID;
+                    string userid = ImageShareDatabase.Albums.Where(a => a.AlbumID == albumid).FirstOrDefault().ApplicationUserID;
 
-                data.imagesAndUsers.AddLast(new ImagesAndUsers { image = img, user = user });
+                    ApplicationUser user = UsersDatabase.Users.Where(u => u.Id == userid).FirstOrDefault();
+
+                    data.imagesAndUsers.AddLast(new ImagesAndUsers { image = img, user = user });
+
+
             }
 
             imagesGrid.AddLast(data);

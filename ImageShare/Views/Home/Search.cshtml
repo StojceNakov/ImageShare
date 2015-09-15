@@ -1,5 +1,9 @@
 ﻿@model ImageShare.Models.Search
 
+@{
+    ViewBag.Title = "Search results";
+}
+
 @using (@Html.BeginForm("Search", "Home", FormMethod.Post))
 {
         <div class="form-group">

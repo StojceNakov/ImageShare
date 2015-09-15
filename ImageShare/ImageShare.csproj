@@ -169,6 +169,7 @@
     <Content Include="Views\Category\Edit.cshtml" />
     <Content Include="Views\Home\Search.cshtml" />
     <Content Include="Views\Home\ShowImage.cshtml" />
+    <Content Include="Views\Images\EditImage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

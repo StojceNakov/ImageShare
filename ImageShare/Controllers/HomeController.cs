@@ -61,7 +61,7 @@ namespace IdentitySample.Controllers
             }
 
 
-            int takeLastXImages = (int)(images.Count() * 0.3);
+            int takeLastXImages = (int)(images.Count() * 0.6);
             LinkedList<Image> temp = new LinkedList<Image>();
 
             for (int i = images.Count() - 1; i >= images.Count() - takeLastXImages; --i)
@@ -150,7 +150,7 @@ namespace IdentitySample.Controllers
 
             foreach (KeyValuePair<long, long> pair in topFavouritedImages)
             {
-                images.AddFirst(imagesContext.Images.Where(i => i.ImageID == pair.Value).First());
+                images.AddFirst(imagesContext.Images.Where(i => i.ImageID == pair.Value).FirstOrDefault());
             }
 
             LinkedList<Category> categories = new LinkedList<Category>(imagesContext.Categories.ToList());

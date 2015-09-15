@@ -1,0 +1,51 @@
+﻿<!-- Modal -->
+@model ImageShare.Models.EditImageViewModel
+
+@{
+    ViewBag.Title = "Edit image";
+}
+
+<div class="modal-dialog" data-dismis="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">@ViewBag.Title</h4>
+        </div>
+        <div class="modal-body">
+
+            <div class="row" style="padding-bottom: 1em;">
+                <img src="@Url.Action("RenderImage", "Images", new { filePath = ViewBag.ImageUrl })" class="img-responsive center-block" />
+            </div>
+
+            <div class="row">
+                @using (@Html.BeginForm("EditImage", "Images", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Title, new { @class = " col-md-2 control-label" })
+
+                        <div class="col-md-10">
+                            @Html.EditorFor(m => m.Title, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    
+                    <div style="display: none">
+                        @Html.EditorFor(m => m.ImageId)
+                    </div>
+                    
+
+                    <div class="modal-footer">
+
+                        <input type="submit" class="btn btn-default" value="Save" />
+
+                        <a href='@Url.Action("DeleteImage", new { imgId = Model.ImageId })'>
+                            <button type="button" class="btn btn-danger"> Delete </button>
+                        </a>
+
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>

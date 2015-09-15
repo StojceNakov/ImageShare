@@ -152,12 +152,12 @@ background-image: url("/Content/Images/dots-pattern.jpg");
     display: none;
 }
 
-.modal-dialog {
+.fullSize .modal-dialog {
   width: 95%;
   padding: 0;
 }
 
-.modal-content {
+.fullSize .modal-content {
   border-radius: 0;
 }
 

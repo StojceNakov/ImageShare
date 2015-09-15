@@ -54,4 +54,10 @@ namespace ImageShare.Models
     {
         public string SearchWord { get; set; }
     }
+
+    public class EditImageViewModel
+    {
+        public string Title { get; set; }
+        public long ImageId { get; set; }
+    }
 }

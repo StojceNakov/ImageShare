@@ -1,5 +1,9 @@
 ﻿@model ImageShare.Models.ImageViewModel
 
+@{
+    ViewBag.Title = "Upload Image";
+}
+
 
 @using (@Html.BeginForm("AddImages", "Images", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
 {
